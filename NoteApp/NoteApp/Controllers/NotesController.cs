@@ -9,11 +9,11 @@ using NoteApp.Models;
 
 namespace NoteApp.Controllers
 {
-    public class HomeController : Controller
+    public class NotesController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<NotesController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public NotesController(ILogger<NotesController> logger)
         {
             _logger = logger;
         }
