@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteApp", "NoteApp\NoteApp.csproj", "{FCEAE912-C601-44E5-AECA-206270406E85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteApp", "NoteApp\NoteApp.csproj", "{FCEAE912-C601-44E5-AECA-206270406E85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteApp.Domain", "NoteApp.Domain\NoteApp.Domain.csproj", "{15DD7A8E-712D-4456-9F2C-624DF0E1CD10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{FCEAE912-C601-44E5-AECA-206270406E85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCEAE912-C601-44E5-AECA-206270406E85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCEAE912-C601-44E5-AECA-206270406E85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15DD7A8E-712D-4456-9F2C-624DF0E1CD10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15DD7A8E-712D-4456-9F2C-624DF0E1CD10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15DD7A8E-712D-4456-9F2C-624DF0E1CD10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15DD7A8E-712D-4456-9F2C-624DF0E1CD10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
