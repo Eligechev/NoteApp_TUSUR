@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NoteApp.Domain;
+using NoteApp.Domain.Enums;
+using NoteApp.Domain.Models;
 using NoteApp.Models;
 
 namespace NoteApp.Controllers
@@ -12,26 +15,32 @@ namespace NoteApp.Controllers
     public class NotesController : Controller
     {
         private readonly ILogger<NotesController> _logger;
+        private readonly NotesManager notesManager;
+        private Project project;
 
         public NotesController(ILogger<NotesController> logger)
         {
             _logger = logger;
+            notesManager = new NotesManager();
+            project = new Project();
         }
 
-        public IActionResult Index()
+        [HttpPost]
+        public void AddNote(string name, string text, NotesCategories notesCategoriy)
         {
-            return View();
+            var note = new NoteModel();
+            note.NoteMessage = text;
+            note.NoteName = name;
+            note.NotesCategory = notesCategoriy;
+            
+            project.NoteModels.Add(note);
+            notesManager.AddNotes(project);
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public void GetNotes()
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            project = notesManager.GetNotesProject();
         }
     }
 }
