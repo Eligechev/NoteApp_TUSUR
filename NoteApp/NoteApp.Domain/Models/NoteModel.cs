@@ -11,9 +11,8 @@ namespace NoteApp.Domain.Models
     /// </summary>
     public class NoteModel
     {
-        private int id;
-        private string noteMessage;
-        private string noteName;
+        private string _noteMessage;
+        private string _noteName;
 
         /// <summary>
         /// При инициализации объекта указывается дата создания заметки.
@@ -28,21 +27,21 @@ namespace NoteApp.Domain.Models
         /// </summary>
         public string NoteName
         {
-            get => noteName;
+            get => _noteName;
             
             set
             {
-                if (String.IsNullOrEmpty(noteName))
+                if (String.IsNullOrEmpty(_noteName))
                 {
                     throw new ArgumentException("Имя заметки не должно быть пустым");
                 }
 
-                if (noteName.Length > 50)
+                if (_noteName.Length > 50)
                 {
                     throw new ArgumentException("Название не должно содержать более 50 символов");
                 }
 
-                noteName = value;
+                _noteName = value;
                 this.ChangeEditTime();
             }
         }
@@ -52,14 +51,14 @@ namespace NoteApp.Domain.Models
         /// </summary>
         public string NoteMessage
         {
-            get => noteMessage;
+            get => _noteMessage;
 
             set
             {
-                if (String.IsNullOrEmpty(noteMessage))
+                if (String.IsNullOrEmpty(_noteMessage))
                     throw new ArgumentException("Текст заметки не должен быть пустым");
 
-                noteMessage = value;
+                _noteMessage = value;
                 this.ChangeEditTime();
             }
         }

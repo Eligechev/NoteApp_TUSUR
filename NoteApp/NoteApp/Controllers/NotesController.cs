@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NoteApp.Domain;
 using NoteApp.Domain.Enums;
 using NoteApp.Domain.Models;
-using NoteApp.Models;
 
 namespace NoteApp.Controllers
 {
     public class NotesController : Controller
     {
         private readonly ILogger<NotesController> _logger;
-        private readonly NotesManager notesManager;
+        private readonly INotesManager notesManager;
         private Project project;
 
         public NotesController(ILogger<NotesController> logger)
@@ -26,21 +20,28 @@ namespace NoteApp.Controllers
         }
 
         [HttpPost]
-        public void AddNote(string name, string text, NotesCategories notesCategoriy)
+        public void AddNote(NoteModel model)
         {
-            var note = new NoteModel();
-            note.NoteMessage = text;
-            note.NoteName = name;
-            note.NotesCategory = notesCategoriy;
-            
-            project.NoteModels.Add(note);
-            notesManager.AddNotes(project);
+            project.NoteModels.Add(model);
+            notesManager.EditNotes(project);
         }
 
         [HttpGet]
-        public void GetNotes()
+        public void GetNotes(NotesCategories category)
         {
-            project = notesManager.GetNotesProject();
+            project = notesManager.GetNotesProject(category);
+        }
+
+        [HttpPut]
+        public void EditNote(NoteModel model)
+        {
+        }
+
+        [HttpDelete]
+        public void DeleteNote(NoteModel model)
+        {
+            project.NoteModels.Remove(model);
+            notesManager.EditNotes(project);
         }
     }
 }

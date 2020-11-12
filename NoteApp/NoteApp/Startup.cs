@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NoteApp.Filters;
 
 namespace NoteApp
 {
@@ -24,6 +25,12 @@ namespace NoteApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            
+            // глобально - все сервисы MVC - и контроллеры, и Razor Page
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new ExceptionFilter()); // подключение по объекту
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
