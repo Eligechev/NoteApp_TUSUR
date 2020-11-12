@@ -55,7 +55,7 @@ namespace NoteApp.Domain.Models
 
             set
             {
-                if (String.IsNullOrEmpty(_noteMessage))
+                if (String.IsNullOrEmpty(value))
                     throw new ArgumentException("Текст заметки не должен быть пустым");
 
                 _noteMessage = value;

@@ -57,7 +57,7 @@ namespace NoteApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Notes}/{action=Index}/{id?}");
+                    pattern: "{controller=Notes}/{action=GetNotes}");
             });
         }
     }

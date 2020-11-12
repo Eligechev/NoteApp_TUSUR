@@ -1,57 +1,83 @@
-﻿@model NoteApp.Domain.Models.NoteModel
-
-@{
+﻿@{
     ViewData["Title"] = "Notes";
 }
 
-<!--
-<h1>Notes</h1>
+@model NoteApp.Domain.Project
 
-<h4>NoteModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Notes">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="NoteName" class="control-label"></label>
-                <input asp-for="NoteName" class="form-control" />
-                <span asp-validation-for="NoteName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NoteMessage" class="control-label"></label>
-                <input asp-for="NoteMessage" class="form-control" />
-                <span asp-validation-for="NoteMessage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NotesCategory" class="control-label"></label>
-                <input asp-for="NotesCategory" class="form-control" />
-                <span asp-validation-for="NotesCategory" class="text-danger"></span>    
-            </div>
-            <div class="form-group">
-                <label asp-for="CreationTime" class="control-label"></label>
-                <input asp-for="CreationTime" class="form-control" />
-                <span asp-validation-for="CreationTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ChangeDate" class="control-label"></label>
-                <input asp-for="ChangeDate" class="form-control" />
-                <span asp-validation-for="ChangeDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div align="center">
+    <br />
+    <!--
+    <div align="right">
+        <table>
+            <tr>
+                <td>
+                    <form method="post" asp-controller="Notes" asp-action="Logout">
+                        <input type="submit" class="btn btn-sm btn-danger" value="Logout" />
+                    </form>
+                </td>
+                <td>
+                    <form method="get" sp-controller="Account" asp-action="CreateTask">
+                        <input type="submit" class="btn btn-sm btn-success" value="Add task" />
+                    </form>
+                </td>
+            </tr>
+        </table>
     </div>
-</div>
+    -->
+    <div class="bg-primary"><h4>Tasks</h4></div>
+    <table class="table table-bordered">
+        <tr>
+            <th scope="col">Note title</th>
+            <th scope="col">Note text</th>
+            <th scope="col">Creation date</th>
+            <th scope="col">Edition date</th>
+            <th scope="col">Category</th>
+        </tr>
+        @foreach (var note in Model.NoteModels)
+        {
+            <tr>
+                <td>@note.</td>
+                <td>
+                    @note.NoteName
+                </td>
+                <td>
+                    <p>@note.NoteMessage</p>
+                </td>
+                <td>
+                    <p>@note.CreationTime</p>
+                </td>
+                <td>
+                    <p>@note.ChangeDate</p>
+                </td>
+                <td>
+                    <p>@note.NotesCategory</p>
+                </td>
+            </tr>
+        }
+    </table>@*
+    <br />
+    <div align="center">
+        <p>@Model.PagedViewModel.PageNumber</p>
+    </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
--->
+    @if (Model.PagedViewModel.HasPreviousPage)
+        {
+            <a asp-action="TaskList"
+               asp-route-page="@(Model.PagedViewModel.PageNumber - 1)"
+               class="btn btn-default btn">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Past
+            </a>
+        }
 
-<h1>Notes</h1>
-<hr/>
-<table>
-    
-</table>
+        @if (Model.PagedViewModel.HasNextPage)
+        {
+            <a asp-action="TaskList"
+               asp-route-page="@(Model.PagedViewModel.PageNumber + 1)"
+               class="btn btn-default btn">
+                Next
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+        }*@
+
+</div>
