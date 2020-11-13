@@ -32,9 +32,16 @@ namespace NoteApp.Domain
 
         public void EditNotes(Project project)
         {
-            using (JsonWriter writer = new JsonTextWriter(sw))
+            try
             {
-                serializer.Serialize(writer, project);
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, project);
+                }
+            }
+            catch
+            {
+                throw new Exception("An error while serialization occured");
             }
         }
 

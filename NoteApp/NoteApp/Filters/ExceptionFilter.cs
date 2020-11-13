@@ -13,7 +13,7 @@ namespace NoteApp.Filters
             string exceptionMessage = context.Exception.Message;
             context.Result = new ContentResult
             {
-                Content = $"В методе {actionName} возникло исключение: \n {exceptionMessage} \n {exceptionStack}"
+                Content = $"Возникло исключение в ходе выполнения программы: \n {exceptionMessage}"
             };
             context.ExceptionHandled = true;
         }
