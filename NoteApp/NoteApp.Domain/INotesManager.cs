@@ -24,12 +24,20 @@ namespace NoteApp.Domain
 
     public class NotesManager : INotesManager
     {
-        private static string _path = Directory.GetCurrentDirectory();
+        private static string _path = Environment.SpecialFolder.ApplicationData + "\\NotesApp\\Notes.txt";
 
         private JsonSerializer serializer = new JsonSerializer();
         private StreamWriter sw = new StreamWriter(_path);
         private StreamReader sr = new StreamReader(_path);
 
+        public NotesManager()
+        {
+            if (!Directory.Exists(_path))
+            {
+                Directory.CreateDirectory(_path);
+            }
+        }
+        
         public void EditNotes(Project project)
         {
             try
