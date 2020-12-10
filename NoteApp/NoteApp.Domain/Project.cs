@@ -11,8 +11,16 @@ namespace NoteApp.Domain
     public class Project
     {
         /// <summary>
+        /// Инициализация списка записок.
+        /// </summary>
+        public Project()
+        {
+            this.NoteModels = new List<NoteModel>();    
+        }
+        
+        /// <summary>
         /// Список заметок
         /// </summary>
-        public List<NoteModel> NoteModels { get; set; } = new List<NoteModel>();
+        public List<NoteModel> NoteModels { get; set; }
     }
 }

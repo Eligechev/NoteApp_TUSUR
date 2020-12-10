@@ -18,4 +18,15 @@
     <ProjectReference Include="..\NoteApp.Domain\NoteApp.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\Notes.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Notes\Notes.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Resource>
+  </ItemGroup>
+
 </Project>

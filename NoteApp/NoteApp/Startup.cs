@@ -26,6 +26,8 @@ namespace NoteApp
         {
             services.AddControllersWithViews();
             
+            services.AddRazorPages();
+
             // глобально - все сервисы MVC - и контроллеры, и Razor Page
             services.AddMvc(options =>
             {
@@ -57,7 +59,9 @@ namespace NoteApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Notes}/{action=GetNotes}");
+                    pattern: "{controller=Notes}/{action=Notes}");
+                
+                endpoints.MapRazorPages();
             });
         }
     }

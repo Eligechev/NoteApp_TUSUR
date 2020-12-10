@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NoteApp.Domain;
 using NoteApp.Domain.Enums;
@@ -28,16 +29,22 @@ namespace NoteApp.Controllers
         //    notesManager.EditNotes(project);
         }
 
-        [HttpGet]
-        public ActionResult<Project> GetNotes()
+        public ActionResult<Project> Notes()
         {
             project = notesManager.GetNotesProject(null);
-            return View("../Views/Notes.cshtml", project);
+            return View("Notes",project);
+        }
+
+        public ActionResult<Project> FilteredNotes(NotesCategories noteCategory)
+        {
+            project.NoteModels = project.NoteModels.Where(n => n.NotesCategory == noteCategory).ToList();
+            return  new ActionResult<Project>(project.NoteModels.FirstOrDefault().NotesCategory == noteCategory));
         }
 
         [HttpPut]
         public void EditNote(NoteModel model)
         {
+            this.project.NoteModels.Where(n => n.)
         }
 
         [HttpDelete]

@@ -31,12 +31,12 @@ namespace NoteApp.Domain.Models
             
             set
             {
-                if (String.IsNullOrEmpty(_noteName))
+                if (String.IsNullOrEmpty(value))
                 {
                     throw new ArgumentException("Имя заметки не должно быть пустым");
                 }
 
-                if (_noteName.Length > 50)
+                if (value.Length > 50)
                 {
                     throw new ArgumentException("Название не должно содержать более 50 символов");
                 }

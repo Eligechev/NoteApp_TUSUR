@@ -25,7 +25,7 @@ namespace NoteApp.Domain
 
     public class NotesManager : INotesManager
     {
-        /*private static string _path = Directory.GetCurrentDirectory();
+        private static string _path = Directory.GetCurrentDirectory();
 
         private JsonSerializer serializer = new JsonSerializer();
         private StreamWriter sw = new StreamWriter(_path);
@@ -38,22 +38,18 @@ namespace NoteApp.Domain
                 serializer.Serialize(writer, project);
             }
         }
-        */
+        
 
         public Project GetNotesProject(NotesCategories? category = null)
         {
             Project project = new Project();
-            
-            project.NoteModels = new List<NoteModel>()
-            {
-                new NoteModel()
+
+            project.NoteModels.Add(new NoteModel()
                 {
                     NotesCategory = NotesCategories.Docs,
                     NoteMessage = "213",
                     NoteName = "dsa"
-                }
-            };
-
+                });
             return project;
             
             /*try
