@@ -21,6 +21,11 @@ namespace NoteApp.Domain.Models
         {
             this.CreationTime = DateTime.Now;
         }
+        
+        /// <summary>
+        /// Идентификатор заметки. 
+        /// </summary>
+        public int Id { get; set; }
 
         /// <summary>
         /// Имя заметки.

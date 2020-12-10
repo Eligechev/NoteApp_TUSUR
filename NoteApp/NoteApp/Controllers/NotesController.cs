@@ -17,11 +17,43 @@ namespace NoteApp.Controllers
         {
             _logger = logger;
             notesManager = new NotesManager();
+<<<<<<< HEAD
             
+            // Костыль конечно, но сделано для разора, чтобы при загрузке страницы отображался список.
+            project = notesManager.GetNotesProject();
+=======
+
             // Костыль конечно, но сделано для разора, чтобы при загрузке страницы отображался список.
             project = notesManager.GetNotesProject();
         }
 
+        /// <summary>
+        /// Получение всех заметок
+        /// </summary>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [HttpGet]
+        public ActionResult<Project> GetNotes()
+        {
+            project = notesManager.GetNotesProject();
+            return View("../Views/Notes.cshtml", project);
+        }
+        
+        /// <summary>
+        /// Получение всех заметок данного типа.
+        /// </summary>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [HttpGet] 
+        public ActionResult<Project> FilterNotesByCategory(NotesCategories categoriy)
+        {
+            project = notesManager.GetNotesProject(categoriy);
+            return View("../Views/Notes.cshtml", project);
+>>>>>>> Feature_AddDomainLayer
+        }
+
+        /// <summary>
+        /// Добавление заметки
+        /// </summary>
+        /// <param name="model">Модель добавляемой заметки.</param>
         [HttpPost]
         public void AddNote(NoteModel model)
         {
@@ -47,6 +79,10 @@ namespace NoteApp.Controllers
             this.project.NoteModels.Where(n => n.)
         }
 
+        /// <summary>
+        /// Удаление заметки
+        /// </summary>
+        /// <param name="model">Модель удаляемой заметки.</param>
         [HttpDelete]
         public void DeleteNote(NoteModel model)
         {
