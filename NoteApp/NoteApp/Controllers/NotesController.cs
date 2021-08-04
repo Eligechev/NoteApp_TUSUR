@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using NoteApp.Domain;
 using NoteApp.Domain.Enums;
@@ -17,13 +20,6 @@ namespace NoteApp.Controllers
         {
             _logger = logger;
             notesManager = new NotesManager();
-<<<<<<< HEAD
-            
-            // Костыль конечно, но сделано для разора, чтобы при загрузке страницы отображался список.
-            project = notesManager.GetNotesProject();
-=======
-
-            // Костыль конечно, но сделано для разора, чтобы при загрузке страницы отображался список.
             project = notesManager.GetNotesProject();
         }
 
@@ -32,22 +28,10 @@ namespace NoteApp.Controllers
         /// </summary>
         /// <returns><see cref="ActionResult"/>.</returns>
         [HttpGet]
-        public ActionResult<Project> GetNotes()
+        public ActionResult<Project> Notes(NotesFilter filter)
         {
-            project = notesManager.GetNotesProject();
-            return View("../Views/Notes.cshtml", project);
-        }
-        
-        /// <summary>
-        /// Получение всех заметок данного типа.
-        /// </summary>
-        /// <returns><see cref="ActionResult"/>.</returns>
-        [HttpGet] 
-        public ActionResult<Project> FilterNotesByCategory(NotesCategories categoriy)
-        {
-            project = notesManager.GetNotesProject(categoriy);
-            return View("../Views/Notes.cshtml", project);
->>>>>>> Feature_AddDomainLayer
+            project = notesManager.GetNotesProject(filter);
+            return project;
         }
 
         /// <summary>
@@ -55,39 +39,31 @@ namespace NoteApp.Controllers
         /// </summary>
         /// <param name="model">Модель добавляемой заметки.</param>
         [HttpPost]
-        public void AddNote(NoteModel model)
+        public ActionResult<Project> AddNote(NoteModel model)
         {
-            project.NoteModels.Add(model);
-        //    notesManager.EditNotes(project);
+            this.notesManager.AddNote(project, model);
+            return project;
         }
 
-        public ActionResult<Project> Notes()
-        {
-            project = notesManager.GetNotesProject(null);
-            return View("Notes",project);
-        }
-
-        public ActionResult<Project> FilteredNotes(NotesCategories noteCategory)
-        {
-            project.NoteModels = project.NoteModels.Where(n => n.NotesCategory == noteCategory).ToList();
-            return  new ActionResult<Project>(project.NoteModels.FirstOrDefault().NotesCategory == noteCategory));
-        }
-
+        /// <summary>
+        /// Редактирование заметки
+        /// </summary>
+        /// <param name="model"></param>
         [HttpPut]
-        public void EditNote(NoteModel model)
+        public ActionResult<Project> EditNote(NoteModel model)
         {
-            this.project.NoteModels.Where(n => n.)
+            notesManager.EditNotes(project, model);
+            return project;
         }
 
         /// <summary>
         /// Удаление заметки
         /// </summary>
         /// <param name="model">Модель удаляемой заметки.</param>
-        [HttpDelete]
-        public void DeleteNote(NoteModel model)
+        public ActionResult<Project> DeleteNote(int id)
         {
-            project.NoteModels.Remove(model);
-         //   notesManager.EditNotes(project);
+            this.notesManager.DeleteNote(project, id);
+            return project;
         }
     }
 }

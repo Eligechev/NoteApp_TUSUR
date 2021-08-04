@@ -60,7 +60,7 @@ namespace NoteApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Notes}/{action=Notes}");
-                
+
                 endpoints.MapRazorPages();
             });
         }

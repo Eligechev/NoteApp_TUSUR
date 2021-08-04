@@ -5,7 +5,13 @@ VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteApp", "NoteApp\NoteApp.csproj", "{FCEAE912-C601-44E5-AECA-206270406E85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteApp.Domain", "NoteApp.Domain\NoteApp.Domain.csproj", "{15DD7A8E-712D-4456-9F2C-624DF0E1CD10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteApp.Domain", "NoteApp.Domain\NoteApp.Domain.csproj", "{15DD7A8E-712D-4456-9F2C-624DF0E1CD10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteApp.Tests", "NoteApp.Tests\NoteApp.Tests.csproj", "{956E32ED-3992-47DE-9434-1075219DA5D0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FCEAE912-C601-44E5-AECA-206270406E85} = {FCEAE912-C601-44E5-AECA-206270406E85}
+		{15DD7A8E-712D-4456-9F2C-624DF0E1CD10} = {15DD7A8E-712D-4456-9F2C-624DF0E1CD10}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,10 @@ Global
 		{15DD7A8E-712D-4456-9F2C-624DF0E1CD10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15DD7A8E-712D-4456-9F2C-624DF0E1CD10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15DD7A8E-712D-4456-9F2C-624DF0E1CD10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{956E32ED-3992-47DE-9434-1075219DA5D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{956E32ED-3992-47DE-9434-1075219DA5D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{956E32ED-3992-47DE-9434-1075219DA5D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{956E32ED-3992-47DE-9434-1075219DA5D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
