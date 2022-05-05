@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -12,42 +13,48 @@ namespace NoteApp.Domain
 {
     public interface INotesManager
     {
-        // /// <summary>
-        // /// Сохраняем json файл с объектами заметок.
-        // /// </summary>
-        // /// <param name="project">Экземпляр списка заметок.</param>
-        // void EditNotes(Project project);
+        /// <summary>
+        /// Получение из десериализованного json файла объекта Project.
+        /// </summary>
+        /// <param name="filter">Фильтр.</param>
+        /// <returns><see cref="Project"/>.</returns>
+        List<NoteModel> GetNotesProject(NotesFilter filter = null);
 
         /// <summary>
         /// Получение из десериализованного json файла объекта Project.
         /// </summary>
         /// <param name="filter">Фильтр.</param>
         /// <returns><see cref="Project"/>.</returns>
-        Project GetNotesProject(NotesFilter filter = null);
+        List<NoteModel> GetNotesProjectById(int id);
 
         /// <summary>
         /// Редактирование заметки.
         /// </summary>
         /// <param name="project">Экземпляр проекта.</param>
         /// <param name="model">Заменяемая модель.</param>
-        void EditNotes(Project project, NoteModel model);
+        void EditNotes(NoteModel model);
 
         /// <summary>
         /// Удаление заметки
         /// </summary>
         /// <param name="project">Экземпляр проекта.</param>
         /// <param name="modelId"> ID Удаляемой модели.</param>
-        void DeleteNote(Project project, int modelId);
+        void DeleteNote(int modelId);
 
         /// <summary>
         /// Сохранение записи.
         /// </summary>
         /// <param name="project">Экземпляр проекта.</param>
         /// <param name="model">Вставляемая модель.</param>
-        void AddNote(Project project, NoteModel model);
+        void AddNote(NoteModel model);
+
+        /// <summary>
+        /// Удаление всех заметок.
+        /// </summary>
+        void DeleteAll();
     }
 
-    public class NotesManager : INotesManager
+    internal class NotesManager : INotesManager
     {
         private static string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         private static string _projectFolderName = "\\NotesProjectData";
@@ -58,6 +65,7 @@ namespace NoteApp.Domain
 
         private JsonSerializer serializer;
         private StreamWriter sw;
+        private Project project;
 
         /// <summary>
         /// Базовый публичный конструктор для взаимодействия из контроллера.
@@ -81,54 +89,69 @@ namespace NoteApp.Domain
             {
                 this.sw = new StreamWriter(file);
             }
+
+            this.project = new Project();
+
+            this.LoadFromFile();
         }
 
-        public Project GetNotesProject(NotesFilter filter)
+        public List<NoteModel> GetNotesProject(NotesFilter filter)
         {
-            Project project = new Project();
+            var query = project.NoteModels.AsEnumerable();
 
-            try
+            if (filter?.CategoryFilter != null)
             {
-                using (StreamReader file = File.OpenText(_fileFullPath))
-                {
-                    project = (Project)serializer.Deserialize(file, typeof(Project)) ?? new Project();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"An error while deserialization occured: { e.Message }");
+                query = query.Where(n => n.NotesCategory == filter.CategoryFilter);
             }
 
-            if (filter != null)
+            if (filter?.TextNameFilter != null)
             {
-                var filteredNotes = project.NoteModels.Where(n => n.NotesCategory == filter.CategoryFilter && n.NoteName.Contains(filter.TextNameFilter)).ToList();
-                project.NoteModels = filteredNotes;
+                query = query.Where(n => n.NoteMessage.StartsWith(filter.TextNameFilter));
+            }
+
+            return query.ToList();
+        }
+
+        public List<NoteModel> GetNotesProjectById(int id)
+        {
+            this.LoadFromFile();
+
+            return this.project.NoteModels.Where(n => n.Id == id).ToList();
+        }
+
+        public void EditNotes(NoteModel model)
+        {
+            var noteToEdit = this.project.NoteModels.FirstOrDefault(n => n.Id == model.Id);
+            this.project.NoteModels.Remove(noteToEdit);
+            this.project.NoteModels.Add(model);
+            this.SaveChanges(this.project);
+        }
+
+        public void DeleteNote(int modelId)
+        {
+            var model = this.project.NoteModels.First(n => n.Id == modelId);
+            this.project.NoteModels.Remove(model);
+            this.SaveChanges(this.project);
+        }
+
+        public void AddNote(NoteModel model)
+        {
+            this.project.NoteModels.Add(model);
+            if (!this.project.IdentifierSequence.HasValue)
+            {
+                this.project.IdentifierSequence = 0;
             }
             
-            return project;
+            model.Id = (int)this.project.IdentifierSequence;
+            this.project.IdentifierSequence++;
+            this.SaveChanges(this.project);
         }
 
-        public void EditNotes(Project project, NoteModel model)
+        public void DeleteAll()
         {
-            var noteToEdit = project.NoteModels.FirstOrDefault(n => n.Id == model.Id);
-            project.NoteModels.Remove(noteToEdit);
-            project.NoteModels.Add(model);
-            this.SaveChanges(project);
+            this.project.NoteModels.Clear();
+            this.SaveChanges(this.project);
         }
-
-        public void DeleteNote(Project project, int modelId)
-        {
-            var model = project.NoteModels.First(n => n.Id == modelId);
-            project.NoteModels.Remove(model);
-            this.SaveChanges(project);
-        }
-
-        public void AddNote(Project project, NoteModel model)
-        {
-            project.NoteModels.Add(model);
-            this.SaveChanges(project);
-        }
-
 
         internal void SaveChanges(Project project)
         {
@@ -146,7 +169,22 @@ namespace NoteApp.Domain
             }
         }
 
-        internal void CreateProjectFolderIfNotExists(string path)
+        private void LoadFromFile()
+        {
+            try
+            {
+                using (StreamReader file = File.OpenText(_fileFullPath))
+                {
+                    this.project = (Project)serializer.Deserialize(file, typeof(Project)) ?? new Project();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"An error while deserialization occured: { e.Message }");
+            }
+        }
+
+        private void CreateProjectFolderIfNotExists(string path)
         {
             if (Directory.Exists(path))
             {

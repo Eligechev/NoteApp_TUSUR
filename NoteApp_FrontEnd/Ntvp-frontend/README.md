@@ -1,27 +1,28 @@
-# NtvpFrontend
+<img src="src/assets/images/screenshots/todo-list.png" alt="" style="margin: 0 auto; max-width: 100%;" />
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.2.
+# Todo list
 
-## Development server
+This is a simple todo list app created with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.4.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Build and run
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Install dependencies by running:
 
-## Build
+<pre>
+npm install
+</pre>
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Then run a dev server:
 
-## Running unit tests
+<pre>
+ng serve
+</pre>
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+To preview, navigate to:
 
-## Running end-to-end tests
+<pre>
+http://localhost:1111/
+</pre>
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+(Server port can be changed in angular.json.)

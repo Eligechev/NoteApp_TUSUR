@@ -1,18 +1,29 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
+import {NgModule} from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+/* app components */
+import {AppFooterComponent} from './components/app-footer/app-footer.component';
+import {AppHeaderComponent} from './components/app-header/app-header.component';
+import {TodoListComponent} from './components/todo-list/todo-list.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    AppComponent
-  ],
+    AppComponent,
+    AppFooterComponent,
+    AppHeaderComponent,
+    TodoListComponent],
   imports: [
+    AppRoutingModule,
     BrowserModule,
-    AppRoutingModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

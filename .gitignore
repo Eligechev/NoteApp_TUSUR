@@ -1,9 +1,38 @@
-*.dll
-*.exe
-*.pdb
-*.dll.config
-*.cache
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+
+# Visual Studio Code
+.vscode
+.idea
+
+# User-specific files
 *.suo
-bin/
-obj/
+*.user
+*.userosscache
+*.sln.docstates
+*.bin
+*.pdb
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+packages/
+NoteApp/packages
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio 2015
 .vs/
+*/.idea

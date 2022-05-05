@@ -1,0 +1,27 @@
+<h2 class="title">Things to do today</h2>
+
+<div *ngIf="noteViewModels.length === 0">
+  Add something to do today!
+</div>
+
+<div *ngIf="noteViewModels.length > 0">
+  <nav class="nav nav-todo">
+    <ul>
+      <li><a (click)="removeAll()">Clear all</a></li>
+    </ul>
+  </nav>
+
+  <ul class="todo-list">
+    <li *ngFor="let todo of noteViewModels"
+        class ="todo"
+        (click)="removePost(todo.Id)">
+      <h3>{{todo.NoteName}}</h3>
+      <p>{{todo.NoteMessage}}</p>
+      <br>
+      <div class="row">
+          <p class="col-6">Creation date: {{todo.CreationDate | date: 'dd/MM/yyyy'}}</p>
+          <p class="col-6">Change date: {{todo.ChangeDate | date: 'dd/MM/yyyy'}}</p>
+      </div>
+    </li>
+  </ul>
+</div>

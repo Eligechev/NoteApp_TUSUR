@@ -1,0 +1,54 @@
+@import 'abstracts/functions';
+@import 'abstracts/mixins';
+
+@import 'base/colors';
+
+
+/*
+  Header title
+ */
+
+.header {
+  .title,
+  .subtitle {
+    margin: 0;
+  }
+
+  .title {
+    text-transform: uppercase;
+  }
+}
+
+
+/*
+  Header navigation
+ */
+
+.header {
+  nav.nav-header,
+  .nav.nav-header {
+    ul {
+      margin: 0 -.5rem;
+    }
+
+    ul li .link {
+      @include contrast(color-neutral(700));
+      @include size(6rem);
+
+      border-radius: 50%;
+      font-size: 2rem;
+      line-height: 1;
+      margin: 0 .5rem;
+      padding: 2rem;
+
+      &:hover,
+      &.hover {
+        opacity: .85;
+      }
+
+      &.link-active {
+        @include contrast(color(primary));
+      }
+    }
+  }
+}

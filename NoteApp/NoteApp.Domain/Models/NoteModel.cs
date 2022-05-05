@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json.Converters;
+using NoteApp.Common;
 using NoteApp.Domain.Enums;
 
 namespace NoteApp.Domain.Models
@@ -13,6 +14,7 @@ namespace NoteApp.Domain.Models
     {
         private string _noteMessage;
         private string _noteName;
+        private List<string> _errors;
 
         /// <summary>
         /// При инициализации объекта указывается дата создания заметки.
@@ -20,6 +22,7 @@ namespace NoteApp.Domain.Models
         public NoteModel()
         {
             this.CreationTime = DateTime.Now;
+            _errors = new List<string>();
         }
         
         /// <summary>
@@ -38,12 +41,12 @@ namespace NoteApp.Domain.Models
             {
                 if (String.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Имя заметки не должно быть пустым");
+                    _errors.Add("Имя заметки не должно быть пустым");
                 }
 
                 if (value.Length > 50)
                 {
-                    throw new ArgumentException("Название не должно содержать более 50 символов");
+                    _errors.Add("Название не должно содержать более 50 символов");
                 }
 
                 _noteName = value;
@@ -61,7 +64,7 @@ namespace NoteApp.Domain.Models
             set
             {
                 if (String.IsNullOrEmpty(value))
-                    throw new ArgumentException("Текст заметки не должен быть пустым");
+                    _errors.Add("Текст заметки не должен быть пустым");
 
                 _noteMessage = value;
                 this.ChangeEditTime();
@@ -76,12 +79,21 @@ namespace NoteApp.Domain.Models
         /// <summary>
         /// Время создания.
         /// </summary>
-        public DateTime CreationTime { get; }
+        public DateTime CreationTime { get; set; }
 
         /// <summary>
         /// Время редактирования
         /// </summary>
         public DateTime ChangeDate { get; set; }
+
+
+        public void CheckModel()
+        {
+            if (this._errors.Count != 0)
+            {
+                throw new ValidationException(this._errors);
+            }
+        }
 
         private void ChangeEditTime()
         {

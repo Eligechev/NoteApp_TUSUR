@@ -1,0 +1,33 @@
+button,
+.button {
+  @include contrast(color-neutral(700));
+
+  border: 0;
+  cursor: pointer;
+  line-height: 2rem;
+  margin: .2rem 0;
+  padding: 1rem 2rem;
+  text-align: center;
+
+  &:hover,
+  &.hover {
+    opacity: .85;
+  }
+
+
+  &.button-primary {
+    @include contrast(color(primary));
+  }
+}
+
+
+/**
+  Group of form inputs and corresponding labels
+ */
+
+.form-group {
+  button,
+  .button {
+    width: 100%;
+  }
+}

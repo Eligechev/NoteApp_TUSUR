@@ -19,8 +19,13 @@ namespace NoteApp.Domain
         }
         
         /// <summary>
-        /// Список заметок
+        /// Список заметок.
         /// </summary>
         public List<NoteModel> NoteModels { get; set; }
+        
+        /// <summary>
+        /// Счетчик для отслеживания последнего добавленного идентификатора с целью избежнания коллизии данных.
+        /// </summary>
+        public int? IdentifierSequence { get; set; }
     }
 }

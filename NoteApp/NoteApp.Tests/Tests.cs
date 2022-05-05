@@ -51,11 +51,11 @@ namespace NoteApp.Tests
         public void GetAllNotesTest()
         {
             // Act
-            var project = this.notesManager.GetNotesProject();
+            var notes = this.notesManager.GetNotesProject(null);
 
             // Assert
             var index = 0;
-            foreach (var note in project.NoteModels)
+            foreach (var note in notes)
             {
                 Assert.AreEqual(note.Id, testProject.NoteModels[index].Id);
                 index++;
@@ -65,16 +65,16 @@ namespace NoteApp.Tests
         [Test]
         [TestCase(NotesCategories.Home)]
         [TestCase(NotesCategories.Finances)]
-        public void GetNotesByCategory(NotesCategories category)
+        public void GetNotesByCategory(NotesFilter filter)
         {
             // Act 
-            var project = this.notesManager.GetNotesProject(category);
+            var notes = this.notesManager.GetNotesProject(filter);
 
             // Assert
             var index = 0;
-            foreach(var testNote in testProject.NoteModels.Where(n => n.NotesCategory == category))
+            foreach(var testNote in testProject.NoteModels.Where(n => n.NotesCategory == filter.CategoryFilter))
             {
-                Assert.AreEqual(testNote.Id, project.NoteModels[index].Id);
+                Assert.AreEqual(testNote.Id, notes[index].Id);
                 index++;
             }
         }

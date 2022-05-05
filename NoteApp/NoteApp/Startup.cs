@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NoteApp.Common;
 using NoteApp.Filters;
+using NoteApp.Domain;
 
 namespace NoteApp
 {
@@ -24,15 +21,25 @@ namespace NoteApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            
-            services.AddRazorPages();
-
-            // глобально - все сервисы MVC - и контроллеры, и Razor Page
+            services.AddControllers();
             services.AddMvc(options =>
             {
-                options.Filters.Add(new ExceptionFilter()); // подключение по объекту
+                options.Filters.Add(new ExceptionFilter());
             });
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost",
+                            "http://localhost:1111",
+                            "http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
+            
+            var service = new ApiDependencyModule();
+            ModuleInitializer.InitializeModules(service, services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,27 +49,18 @@ namespace NoteApp
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Notes}/{action=Notes}");
-
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
 }
+    

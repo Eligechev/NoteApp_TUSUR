@@ -1,0 +1,46 @@
+@import 'abstracts/functions';
+@import 'abstracts/mixins';
+
+@import 'base/colors';
+@import 'base/fonts';
+@import 'base/global';
+
+
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.todo {
+  @include contrast(color-neutral(600));
+
+  cursor: pointer;
+  margin: 0 0 .5rem;
+  padding: 1rem;
+  text-decoration: none;
+
+  &:hover,
+  &.hover {
+    opacity: .85;
+  }
+
+  &.todo-done {
+    opacity: .5;
+    text-decoration: line-through;
+  }
+}
+
+
+.nav.nav-todo {
+  ul {
+    margin: -4rem -1rem 0;
+    text-align: right;
+  }
+
+  ul li {
+    font-size: 1.2rem;
+    line-height: 2rem;
+    padding: 1rem;
+  }
+}

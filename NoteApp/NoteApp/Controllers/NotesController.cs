@@ -1,69 +1,97 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Extensions.Logging;
 using NoteApp.Domain;
-using NoteApp.Domain.Enums;
 using NoteApp.Domain.Models;
+using NoteApp.ViewModels;
 
 namespace NoteApp.Controllers
 {
+    /// <summary>
+    /// Контроллер взаимодействия с информацией о записях.
+    /// </summary>
+    [ApiController]
+    [Route("api/notes")]
     public class NotesController : Controller
     {
-        private readonly ILogger<NotesController> _logger;
         private readonly INotesManager notesManager;
-        private Project project;
 
-        public NotesController(ILogger<NotesController> logger)
+        public NotesController(INotesManager notesManager)
         {
-            _logger = logger;
-            notesManager = new NotesManager();
-            project = notesManager.GetNotesProject();
+            this.notesManager = notesManager;
+        }
+
+        /// <summary>
+        /// Получение всех заметок  
+        /// </summary>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [HttpGet("")]
+        public ActionResult<List<NoteModel>> GetNotes([FromQuery] NotesFilter filter)
+        {
+            return notesManager.GetNotesProject(filter);
         }
 
         /// <summary>
         /// Получение всех заметок
         /// </summary>
         /// <returns><see cref="ActionResult"/>.</returns>
-        [HttpGet]
-        public ActionResult<Project> Notes(NotesFilter filter)
+        [HttpGet("{id:int}")]
+        public ActionResult<List<NoteModel>> GetNote(int id)
         {
-            project = notesManager.GetNotesProject(filter);
-            return project;
+            return notesManager.GetNotesProjectById(id);
         }
 
         /// <summary>
         /// Добавление заметки
         /// </summary>
         /// <param name="model">Модель добавляемой заметки.</param>
-        [HttpPost]
-        public ActionResult<Project> AddNote(NoteModel model)
+        [HttpPost("")]
+        public ActionResult AddNote(NoteViewModel model)
         {
-            this.notesManager.AddNote(project, model);
-            return project;
+            this.notesManager.AddNote(this.ConvertIntoDomainModel(model));
+            return Ok();
         }
 
         /// <summary>
         /// Редактирование заметки
         /// </summary>
         /// <param name="model"></param>
-        [HttpPut]
-        public ActionResult<Project> EditNote(NoteModel model)
+        [HttpPut("")]
+        public ActionResult EditNote(NoteViewModel model)
         {
-            notesManager.EditNotes(project, model);
-            return project;
+            this.notesManager.EditNotes(this.ConvertIntoDomainModel(model));
+            
+            return Ok();
         }
 
         /// <summary>
         /// Удаление заметки
         /// </summary>
         /// <param name="model">Модель удаляемой заметки.</param>
-        public ActionResult<Project> DeleteNote(int id)
+        [HttpDelete("{id:int}")]
+        public ActionResult DeleteNote(int id)
         {
-            this.notesManager.DeleteNote(project, id);
-            return project;
+            this.notesManager.DeleteNote(id);
+            return Ok();
+        }
+
+        [HttpDelete("RemoveAll")]
+        public ActionResult RemoveAll()
+        {
+            this.notesManager.DeleteAll();
+            return Ok();
+        }
+        
+        private NoteModel ConvertIntoDomainModel(NoteViewModel viewModel)
+        {
+            var domainModel = new NoteModel();
+
+            domainModel.Id = viewModel.Id.GetValueOrDefault();
+            domainModel.NoteMessage = viewModel.NoteMessage;
+            domainModel.NotesCategory = viewModel.NotesCategory.GetValueOrDefault();
+            domainModel.NoteName = viewModel.NoteName;
+
+            domainModel.CheckModel();
+            return domainModel;
         }
     }
 }
